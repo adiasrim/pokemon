@@ -13,11 +13,12 @@
             v-for="(pokemon, index) of filteredPokemons"
             :key="index"
         >
-            {{pokemon.name}}
+            <router-link
+                v-if="pokemons"
+                :to="`/about/${ulrIdLookUp[pokemon.name]}`"
+                v-text="pokemon.name"
+            />
         </div>
-        <ul v-for="pokemon in pokemons">
-            <li style="border: 1px solid black; margin: 2px">{{pokemon.name}}</li>
-        </ul>
     </div>
 </template>
 
@@ -35,12 +36,10 @@ export default {
         })
         const updatePokemon = () => {
             if (!state.text){
-                return console.log('hello');
+                return [];
             }
 
-            return state.pokemons.filter( pokemon => {
-                pokemon.name.includes(state.text);
-            })
+            return state.pokemons.filter( pokemon => pokemon.name.includes(state.text))
         }
         axios.get('https://pokeapi.co/api/v2/pokemon?offset=0')
             .then( res => res.data )
